@@ -1,0 +1,39 @@
+---
+- hosts: workstations
+  tasks:
+  - name: Install Chocolatey
+    win_chocolatey:
+       name: chocolatey
+       state: present
+       
+# Optional Tasks if you wish to use an internal Chocolatey Repo 
+  - name: Remove the default public chocolatey source repo
+    win_chocolatey_source:
+       name: chocolatey
+       state: absent
+  - name: Add Chocolatey internal source repo
+    win_chocolatey_source:
+       name: internal repo
+       state: present
+       source: http://NEXUSREPOSERVERNAME:8081/repository/chocolatey-group/
+       
+       
+       
+  - name: Installing Latest Version of NXLog
+    win_chocolatey:
+       name: nxlog
+       state: latest
+  - name: Stop NXLOG service if already running
+    win_service:
+       name: nxlog
+       state: stopped
+  - name: Copy Preconfigured NXLog Conf file to the target host
+    win_copy:
+       src: \\FILESERVERNAME\SHARE\Install\NXLOG\nxlog.conf
+       dest: C:\Program Files (x86)\nxlog\conf\
+       remote_src: True
+  - name: Start NXLOG service and set startup options to automatic
+    win_service:
+       name: nxlog
+       start_mode: auto
+       state: started
