@@ -6,7 +6,7 @@
        name: chocolatey
        state: present
        
-# Optional Tasks if you wish to use an internal Chocolatey Repo 
+# Optional Tasks if you wish to use an internal Chocolatey Repo #
   - name: Remove the default public chocolatey source repo
     win_chocolatey_source:
        name: chocolatey
